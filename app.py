@@ -42,7 +42,7 @@ def get_person_orders(name):
                         total = quantity * price
                         result_rows.append({
                             '주차': weeks[i],
-                            '품목': item,
+                            '품목(or 치아 번호)': item,
                             '수량': quantity,
                             '단가': price,
                             '금액': total
@@ -70,63 +70,136 @@ def index():
             <meta charset="utf-8">
             <title>주문 조회</title>
             <style>
-                body {{
+                {
+                    box-sizing: border-box;
+                }
+                body {
                     font-family: 'Segoe UI', sans-serif;
                     background-color: #f9f9f9;
                     color: #333;
                     padding: 2rem;
-                    max-width: 800px;
+                    max-width: 100%;
                     margin: auto;
-                }}
-                h2 {{
+                }
+                h2 {
                     color: #2c3e50;
-                }}
-                form {{
+                    text-align: center;
+                }
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                     margin-bottom: 2rem;
-                }}
-                input[type="text"] {{
-                    padding: 0.5rem;
+                    gap: 1rem;
+                }
+                input[type="text"] {
+                    padding: 0.8rem;
                     font-size: 1rem;
-                    width: 200px;
+                    width: 90%;
+                    max-width: 300px;
                     border: 1px solid #ccc;
-                    border-radius: 4px;
-                }}
-                input[type="submit"] {{
-                    padding: 0.5rem 1rem;
+                    border-radius: 8px;
+                }
+                input[type="submit"] {
+                    padding: 0.7rem 1.2rem;
                     font-size: 1rem;
                     background-color: #3498db;
                     color: white;
                     border: none;
-                    border-radius: 4px;
+                    border-radius: 8px;
                     cursor: pointer;
-                }}
-                input[type="submit"]:hover {{
+                }
+                input[type="submit"]:hover {
                     background-color: #2980b9;
-                }}
-                table {{
+                }
+                .table-wrapper {
+                    overflow-x: auto;
+                    margin-top: 1.5rem;
+                }
+                table {
                     border-collapse: collapse;
                     width: 100%;
                     background-color: white;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }}
-                th, td {{
+                    min-width: 600px;
+                }
+                th, td {
                     border: 1px solid #ddd;
                     padding: 10px;
                     text-align: center;
-                }}
-                th {{
+                }
+                th {
                     background-color: #f2f2f2;
-                }}
-                tr:last-child {{
+                }
+                tr:last-child {
                     font-weight: bold;
                     background-color: #fafafa;
-                }}
-                .message {{
+                }
+                .message {
                     margin-top: 1rem;
                     font-size: 1.1rem;
                     color: #e74c3c;
-                }}
+                    text-align: center;
+                }
             </style>
+            # <style>
+            #     body {{
+            #         font-family: 'Segoe UI', sans-serif;
+            #         background-color: #f9f9f9;
+            #         color: #333;
+            #         padding: 2rem;
+            #         max-width: 800px;
+            #         margin: auto;
+            #     }}
+            #     h2 {{
+            #         color: #2c3e50;
+            #     }}
+            #     form {{
+            #         margin-bottom: 2rem;
+            #     }}
+            #     input[type="text"] {{
+            #         padding: 0.5rem;
+            #         font-size: 1rem;
+            #         width: 200px;
+            #         border: 1px solid #ccc;
+            #         border-radius: 4px;
+            #     }}
+            #     input[type="submit"] {{
+            #         padding: 0.5rem 1rem;
+            #         font-size: 1rem;
+            #         background-color: #3498db;
+            #         color: white;
+            #         border: none;
+            #         border-radius: 4px;
+            #         cursor: pointer;
+            #     }}
+            #     input[type="submit"]:hover {{
+            #         background-color: #2980b9;
+            #     }}
+            #     table {{
+            #         border-collapse: collapse;
+            #         width: 100%;
+            #         background-color: white;
+            #         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            #     }}
+            #     th, td {{
+            #         border: 1px solid #ddd;
+            #         padding: 10px;
+            #         text-align: center;
+            #     }}
+            #     th {{
+            #         background-color: #f2f2f2;
+            #     }}
+            #     tr:last-child {{
+            #         font-weight: bold;
+            #         background-color: #fafafa;
+            #     }}
+            #     .message {{
+            #         margin-top: 1rem;
+            #         font-size: 1.1rem;
+            #         color: #e74c3c;
+            #     }}
+            # </style>
         </head>
         <body>
             <h2>이름을 입력하세요</h2>
@@ -134,7 +207,9 @@ def index():
                 <input type="text" name="name" placeholder="예: 허성광" required>
                 <input type="submit" value="조회">
             </form>
-            {result_html if result_html else '<div class="message">이름을 입력하고 조회 버튼을 눌러주세요 😊</div>'}
+            <div class="table-wrapper">
+                {result_html if result_html else '<div class="message">이름을 입력하고 조회 버튼을 눌러주세요 😊</div>'}
+            </div>
         </body>
         </html>
     '''
