@@ -81,16 +81,23 @@ def index():
                     max-width: 100%;
                     margin: auto;
                 }}
+                h1 {{
+                    text-align: center;
+                    font-size: 1.8rem;
+                    margin-bottom: 1.5rem;
+                    color: #34495e;
+                }}
                 h2 {{
                     color: #2c3e50;
                     text-align: center;
                 }}
                 form {{
                     display: flex;
-                    flex-direction: column;
+                    justify-content: center;
                     align-items: center;
-                    margin-bottom: 2rem;
-                    gap: 1rem;
+                    margin-bottom: 1rem;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
                 }}
                 input[type="text"] {{
                     padding: 0.8rem;
@@ -111,6 +118,12 @@ def index():
                 }}
                 input[type="submit"]:hover {{
                     background-color: #2980b9;
+                }}
+                .account-info {{
+                    text-align: center;
+                    font-size: 1rem;
+                    margin-bottom: 1.5rem;
+                    color: #555;
                 }}
                 .table-wrapper {{
                     overflow-x: auto;
@@ -142,71 +155,14 @@ def index():
                     text-align: center;
                 }}
             </style>
-            # <style>
-            #     body {{
-            #         font-family: 'Segoe UI', sans-serif;
-            #         background-color: #f9f9f9;
-            #         color: #333;
-            #         padding: 2rem;
-            #         max-width: 800px;
-            #         margin: auto;
-            #     }}
-            #     h2 {{
-            #         color: #2c3e50;
-            #     }}
-            #     form {{
-            #         margin-bottom: 2rem;
-            #     }}
-            #     input[type="text"] {{
-            #         padding: 0.5rem;
-            #         font-size: 1rem;
-            #         width: 200px;
-            #         border: 1px solid #ccc;
-            #         border-radius: 4px;
-            #     }}
-            #     input[type="submit"] {{
-            #         padding: 0.5rem 1rem;
-            #         font-size: 1rem;
-            #         background-color: #3498db;
-            #         color: white;
-            #         border: none;
-            #         border-radius: 4px;
-            #         cursor: pointer;
-            #     }}
-            #     input[type="submit"]:hover {{
-            #         background-color: #2980b9;
-            #     }}
-            #     table {{
-            #         border-collapse: collapse;
-            #         width: 100%;
-            #         background-color: white;
-            #         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            #     }}
-            #     th, td {{
-            #         border: 1px solid #ddd;
-            #         padding: 10px;
-            #         text-align: center;
-            #     }}
-            #     th {{
-            #         background-color: #f2f2f2;
-            #     }}
-            #     tr:last-child {{
-            #         font-weight: bold;
-            #         background-color: #fafafa;
-            #     }}
-            #     .message {{
-            #         margin-top: 1rem;
-            #         font-size: 1.1rem;
-            #         color: #e74c3c;
-            #     }}
-            # </style>
         </head>
         <body>
-            <h2>이름을 입력하세요</h2>
+            <h1>3-1Q 1~7주차 개인 재료 정산</h1>
             <form method="post">
                 <input type="text" name="name" placeholder="예: 오민정" required>
                 <input type="submit" value="조회">
             </form>
+            <div class="account-info">입금 계좌: 3333-08-7060602 카카오뱅크 오민정</div>
             <div class="table-wrapper">
                 {result_html if result_html else '<div class="message">이름을 입력하고 조회 버튼을 눌러주세요 😊</div>'}
             </div>
