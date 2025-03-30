@@ -70,37 +70,37 @@ def index():
             <meta charset="utf-8">
             <title>주문 조회</title>
             <style>
-                {
+                * {{
                     box-sizing: border-box;
-                }
-                body {
+                }}
+                body {{
                     font-family: 'Segoe UI', sans-serif;
                     background-color: #f9f9f9;
                     color: #333;
                     padding: 2rem;
                     max-width: 100%;
                     margin: auto;
-                }
-                h2 {
+                }}
+                h2 {{
                     color: #2c3e50;
                     text-align: center;
-                }
-                form {
+                }}
+                form {{
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     margin-bottom: 2rem;
                     gap: 1rem;
-                }
-                input[type="text"] {
+                }}
+                input[type="text"] {{
                     padding: 0.8rem;
                     font-size: 1rem;
                     width: 90%;
                     max-width: 300px;
                     border: 1px solid #ccc;
                     border-radius: 8px;
-                }
-                input[type="submit"] {
+                }}
+                input[type="submit"] {{
                     padding: 0.7rem 1.2rem;
                     font-size: 1rem;
                     background-color: #3498db;
@@ -108,39 +108,39 @@ def index():
                     border: none;
                     border-radius: 8px;
                     cursor: pointer;
-                }
-                input[type="submit"]:hover {
+                }}
+                input[type="submit"]:hover {{
                     background-color: #2980b9;
-                }
-                .table-wrapper {
+                }}
+                .table-wrapper {{
                     overflow-x: auto;
                     margin-top: 1.5rem;
-                }
-                table {
+                }}
+                table {{
                     border-collapse: collapse;
                     width: 100%;
                     background-color: white;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                     min-width: 600px;
-                }
-                th, td {
+                }}
+                th, td {{
                     border: 1px solid #ddd;
                     padding: 10px;
                     text-align: center;
-                }
-                th {
+                }}
+                th {{
                     background-color: #f2f2f2;
-                }
-                tr:last-child {
+                }}
+                tr:last-child {{
                     font-weight: bold;
                     background-color: #fafafa;
-                }
-                .message {
+                }}
+                .message {{
                     margin-top: 1rem;
                     font-size: 1.1rem;
                     color: #e74c3c;
                     text-align: center;
-                }
+                }}
             </style>
             # <style>
             #     body {{
@@ -204,7 +204,7 @@ def index():
         <body>
             <h2>이름을 입력하세요</h2>
             <form method="post">
-                <input type="text" name="name" placeholder="예: 허성광" required>
+                <input type="text" name="name" placeholder="예: 오민정" required>
                 <input type="submit" value="조회">
             </form>
             <div class="table-wrapper">
