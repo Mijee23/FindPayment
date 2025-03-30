@@ -54,7 +54,7 @@ def index():
             result_html = result_df.to_html(index=False)
         else:
             result_html = "<p>해당 이름의 주문 내역이 없습니다.</p>"
-    return return f'''
+    return f'''
         <!DOCTYPE html>
         <html>
         <head>
