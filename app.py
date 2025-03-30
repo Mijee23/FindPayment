@@ -5,7 +5,28 @@ import os
 
 app = Flask(__name__)
 
+# 리스트 초기화
 data1, data2, prices1, prices2, weeks = [], [], [], [], []
+
+# 주차별로 정렬된 파일 목록을 가져오기 위해 data1 기준 파일명을 정렬
+data1_files = sorted(glob.glob("data/*_data1.csv"))
+
+for path in data1_files:
+    # 예: 'data/1주차_data1.csv' → '1주차'
+    filename = os.path.basename(path)
+    week = filename.split("_")[0]
+    weeks.append(week)
+
+    # 같은 주차의 다른 파일 경로
+    data2_path = f"data/{week}_data2.csv"
+    prices1_path = f"data/{week}_prices1.csv"
+    prices2_path = f"data/{week}_prices2.csv"
+
+    # CSV 불러오기
+    data1.append(pd.read_csv(path))
+    data2.append(pd.read_csv(data2_path))
+    prices1.append(pd.read_csv(prices1_path))
+    prices2.append(pd.read_csv(prices2_path))
 
 for path in sorted(glob.glob("data/*_data1.csv")):
     week = os.path.basename(path).split('_')[0]
