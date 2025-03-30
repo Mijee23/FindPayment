@@ -43,7 +43,7 @@ def get_person_orders(name):
                         result_rows.append({
                             '주차': weeks[i],
                             '품목(or 치아 번호)': item,
-                            '수량': quantity,
+                            '수량': int(quantity),
                             '단가': price,
                             '금액': total
                         })
