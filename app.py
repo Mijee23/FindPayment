@@ -28,18 +28,6 @@ for path in data1_files:
     prices1.append(pd.read_csv(prices1_path))
     prices2.append(pd.read_csv(prices2_path))
 
-for path in sorted(glob.glob("data/*_data1.csv")):
-    week = os.path.basename(path).split('_')[0]
-    weeks.append(week)
-    data1.append(pd.read_csv(path))
-
-for path in sorted(glob.glob("data/*_data2.csv")):
-    data2.append(pd.read_csv(path))
-for path in sorted(glob.glob("data/*_prices1.csv")):
-    prices1.append(pd.read_csv(path))
-for path in sorted(glob.glob("data/*_prices2.csv")):
-    prices2.append(pd.read_csv(path))
-
 def get_person_orders(name):
     result_rows = []
     for i in range(len(weeks)):
