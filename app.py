@@ -44,8 +44,8 @@ def get_person_orders(name):
                             '주차': weeks[i],
                             '품목(or 치아 번호)': item,
                             '수량': int(quantity),
-                            '단가': price,
-                            '금액': total
+                            '단가': int(price),
+                            '금액': int(total)
                         })
     result_df = pd.DataFrame(result_rows)
     if not result_df.empty:
