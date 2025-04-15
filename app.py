@@ -1,4 +1,7 @@
 from flask import Flask, request
+from threading import Thread
+
+app = Flask(__name__)
 import pandas as pd
 import glob
 import os
@@ -12,21 +15,33 @@ data1, data2, prices1, prices2, weeks = [], [], [], [], []
 data1_files = sorted(glob.glob("data/*_data1.csv"))
 
 for path in data1_files:
-    # 예: 'data/1주차_data1.csv' → '1주차'
     filename = os.path.basename(path)
     week = filename.split("_")[0]
     weeks.append(week)
 
-    # 같은 주차의 다른 파일 경로
     data2_path = f"data/{week}_data2.csv"
     prices1_path = f"data/{week}_prices1.csv"
     prices2_path = f"data/{week}_prices2.csv"
 
-    # CSV 불러오기
     data1.append(pd.read_csv(path))
     data2.append(pd.read_csv(data2_path))
     prices1.append(pd.read_csv(prices1_path))
     prices2.append(pd.read_csv(prices2_path))
+
+# 공동 재료비
+shared_costs = [
+    
+    {"항목": "1주차", "금액": 368300},
+    {"항목": "2주차", "금액": 288300},
+    {"항목": "3주차", "금액": 40000},
+    {"항목": "4주차", "금액": 38300},
+    {"항목": "5주차", "금액": 31000},
+    {"항목": "6주차", "금액": 69300},
+    {"항목": "7주차", "금액": 176000},
+    {"항목": "8주차", "금액": 97000},
+    {"항목": "9주차", "금액": 300000},
+    {"항목": "10주차", "금액": 58300},
+]
 
 def get_person_orders(name):
     result_rows = []
@@ -41,28 +56,52 @@ def get_person_orders(name):
                         price = price_row[item]
                         total = quantity * price
                         result_rows.append({
-                            '주차': weeks[i],
-                            '품목(or 치아 번호)': item,
-                            '수량': int(quantity),
-                            '단가': int(price),
-                            '금액': int(total)
+                            'Week': weeks[i],
+                            'Item': item,
+                            'Qty': quantity,
+                            'Unit Price': price,
+                            'Amount': total
                         })
     result_df = pd.DataFrame(result_rows)
+    person_total = result_df['Amount'].sum() if not result_df.empty else 0
     if not result_df.empty:
-        total = result_df['금액'].sum()
-        result_df.loc[len(result_df)] = ['합계', '', '', '', total]
-    return result_df
+        result_df.loc[len(result_df)] = ['합계', '', '', '', person_total]
+    return result_df, person_total
+
+def get_shared_table():
+    df = pd.DataFrame(shared_costs)
+    shared_total = df['금액'].sum()
+    shared_per_person = round(shared_total / 91)
+    df.loc[len(df)] = ['합계', shared_total]
+    df.loc[len(df)] = ['공동비 / 91인', shared_per_person]
+    return df, shared_total, shared_per_person
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     result_html = ''
     if request.method == 'POST':
         name = request.form['name']
-        result_df = get_person_orders(name)
-        if not result_df.empty:
-            result_html = result_df.to_html(index=False)
-        else:
-            result_html = "<p>해당 이름의 주문 내역이 없습니다.</p>"
+        person_df, person_total = get_person_orders(name)
+        shared_df, shared_total, shared_per_person = get_shared_table()
+        final_total = person_total + shared_per_person
+
+        person_table = person_df.to_html(index=False) if not person_df.empty else '<p>개인 구매 내역 없음</p>'
+        shared_table = shared_df.to_html(index=False)
+
+        result_html = f'''
+        <div class="columns">
+            <div class="column">
+                <h3>📦 개인 구매 내역</h3>
+                {person_table}
+            </div>
+            <div class="column">
+                <h3>🤝 공동 재료비</h3>
+                {shared_table}
+                <p><strong>최종 납부 금액 (개인 + 공동): {final_total:,}원</strong></p>
+            </div>
+        </div>
+        '''
+
     return f'''
         <!DOCTYPE html>
         <html>
@@ -70,9 +109,7 @@ def index():
             <meta charset="utf-8">
             <title>주문 조회</title>
             <style>
-                * {{
-                    box-sizing: border-box;
-                }}
+                * {{ box-sizing: border-box; }}
                 body {{
                     font-family: 'Segoe UI', sans-serif;
                     background-color: #f9f9f9;
@@ -86,10 +123,6 @@ def index():
                     font-size: 1.8rem;
                     margin-bottom: 1.5rem;
                     color: #34495e;
-                }}
-                h2 {{
-                    color: #2c3e50;
-                    text-align: center;
                 }}
                 form {{
                     display: flex;
@@ -116,34 +149,35 @@ def index():
                     border-radius: 8px;
                     cursor: pointer;
                 }}
-                input[type="submit"]:hover {{
-                    background-color: #2980b9;
-                }}
                 .account-info {{
                     text-align: center;
                     font-size: 1rem;
                     margin-bottom: 1.5rem;
                     color: #555;
                 }}
-                .table-wrapper {{
-                    overflow-x: auto;
-                    margin-top: 1.5rem;
+                .columns {{
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 2rem;
+                    margin-top: 2rem;
+                }}
+                .column {{
+                    flex: 1;
+                    min-width: 300px;
                 }}
                 table {{
                     border-collapse: collapse;
                     width: 100%;
                     background-color: white;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                    min-width: 600px;
+                    min-width: 400px;
                 }}
                 th, td {{
                     border: 1px solid #ddd;
                     padding: 10px;
                     text-align: center;
                 }}
-                th {{
-                    background-color: #f2f2f2;
-                }}
+                th {{ background-color: #f2f2f2; }}
                 tr:last-child {{
                     font-weight: bold;
                     background-color: #fafafa;
@@ -157,16 +191,13 @@ def index():
             </style>
         </head>
         <body>
-            <h1>3-1Q 1~7주차 개인 재료 정산</h1>
+            <h1>3-1Q 공동 및 개인 재료 정산</h1>
             <form method="post">
                 <input type="text" name="name" placeholder="예: 오민정" required>
                 <input type="submit" value="조회">
             </form>
             <div class="account-info">입금 계좌: 3333-08-7060602 카카오뱅크 오민정</div>
-            <div class="table-wrapper">
-                {result_html if result_html else '<div class="message">이름을 입력하고 조회 버튼을 눌러주세요 😊</div>'}
-            </div>
+            {result_html if result_html else '<div class="message">이름을 입력하고 조회 버튼을 눌러주세요 😊</div>'}
         </body>
         </html>
     '''
-
