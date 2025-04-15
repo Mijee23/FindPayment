@@ -89,6 +89,7 @@ def index():
         shared_table = shared_df.to_html(index=False)
 
         result_html = f'''
+        <p class="final-total"><strong>✅ 최종 납부 금액 (개인 + 공동): {final_total:,}원</strong></p>
         <div class="columns">
             <div class="column">
                 <h3>📦 개인 구매 내역</h3>
@@ -97,7 +98,6 @@ def index():
             <div class="column">
                 <h3>🤝 공동 재료비</h3>
                 {shared_table}
-                <p><strong>최종 납부 금액 (개인 + 공동): {final_total:,}원</strong></p>
             </div>
         </div>
         '''
