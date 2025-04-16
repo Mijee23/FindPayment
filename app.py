@@ -101,12 +101,13 @@ def index():
             </div>
         </div>
         '''
-
+        
     return f'''
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>주문 조회</title>
             <style>
                 * {{ box-sizing: border-box; }}
@@ -152,8 +153,19 @@ def index():
                 .account-info {{
                     text-align: center;
                     font-size: 1rem;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1rem;
                     color: #555;
+                }}
+                .final-total {{
+                    text-align: center;
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    color: #2c3e50;
+                    margin: 1.5rem auto;
+                    background-color: #ecf0f1;
+                    padding: 1rem;
+                    border-radius: 10px;
+                    max-width: 90%;
                 }}
                 .columns {{
                     display: flex;
@@ -164,6 +176,7 @@ def index():
                 .column {{
                     flex: 1;
                     min-width: 300px;
+                    width: 100%;
                 }}
                 table {{
                     border-collapse: collapse;
@@ -187,6 +200,22 @@ def index():
                     font-size: 1.1rem;
                     color: #e74c3c;
                     text-align: center;
+                }}
+                @media screen and (max-width: 768px) {{
+                    body {{
+                        padding: 1rem;
+                    }}
+                    input[type="text"] {{
+                        width: 100%;
+                        max-width: 100%;
+                    }}
+                    .final-total {{
+                        font-size: 1.2rem;
+                    }}
+                    table {{
+                        min-width: unset;
+                        font-size: 0.9rem;
+                    }}
                 }}
             </style>
         </head>
